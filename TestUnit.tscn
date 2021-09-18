@@ -21,3 +21,9 @@ texture = ExtResource( 1 )
 centered = false
 
 [node name="MoveTarget" type="Position2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="MoveTarget"]
+modulate = Color( 4.05, 0, 0.17, 1 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 1 )
+centered = false

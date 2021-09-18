@@ -7,6 +7,9 @@ var inputDirection : Vector2
 var Speed : int
 var disTraveled : int
 
+var selected
+
+
 func _process(delta):
 	viewPortSize = get_viewport().size
 	if Input.is_action_just_pressed("ui_down"): 
@@ -27,6 +30,8 @@ func _process(delta):
 	if self.position.x < 0:
 		self.position.x = 0
 	
+	if selected != null:
+		selected._set_target_pos(self.get_global_position()-Vector2(64,64))
 	
 
 #func moveInput():
@@ -44,5 +49,10 @@ func _process(delta):
 #func gridMovement():
 #	pass
 #
-#func _ready():
-#	pass
+func _ready():
+	$AnimationPlayer.play("Idle")
+
+
+
+func _on_PCursor_body_entered(body):
+	selected = body

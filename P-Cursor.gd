@@ -10,6 +10,9 @@ var disTraveled : int
 
 var selected
 var hovered
+export(NodePath) var SpritePath
+onready var CursorSprite = get_node(SpritePath)
+
 
 export (NodePath) var UnselectedMenuPath
 onready var UnselectedMenu = get_node(UnselectedMenuPath)
@@ -36,14 +39,23 @@ func _process(delta):
 		self.position.x = 0
 	
 	if Input.is_action_just_pressed("ui_accept"):
-		if hovered != null:
+		if hovered != null and selected == null:
 			print(hovered)
 			selected = hovered
+			CursorSprite.set_modulate(Color(0.25, 0.7, 1))
+			selected.set_selected(true)
 		elif selected != null:
-			selected._set_target_pos(self.get_global_position())
-			selected.move()
-			selected = null
-	
+			if selected == hovered:
+				CursorSprite.set_modulate(Color(1, 1, 1))
+				selected.set_selected(false)
+				selected = null
+			else:
+				selected._set_target_pos(self.get_global_position())
+				selected.move()
+				selected.set_selected(false)
+				selected = null
+				CursorSprite.set_modulate(Color(1, 1, 1))
+		
 
 #func moveInput():
 #	inputDirection = Vector2.ZERO

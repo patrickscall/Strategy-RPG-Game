@@ -6,6 +6,7 @@
 [node name="World" type="Node"]
 
 [node name="P-Cursor" parent="." instance=ExtResource( 1 )]
+z_index = 10
 
 [node name="TestUnit" parent="." instance=ExtResource( 2 )]
 position = Vector2( 64, 64 )

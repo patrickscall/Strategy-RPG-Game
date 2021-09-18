@@ -18,7 +18,7 @@ export (NodePath) var UnselectedMenuPath
 onready var UnselectedMenu = get_node(UnselectedMenuPath)
 
 
-func _process(delta):
+func _process(_delta):
 	viewPortSize = get_viewport().size
 	if Input.is_action_just_pressed("ui_down"): 
 		self.position.y += 64
@@ -81,5 +81,5 @@ func _on_PCursor_body_entered(body):
 	hovered = body
 
 
-func _on_PCursor_body_exited(body):
+func _on_PCursor_body_exited(_body):
 	hovered = null

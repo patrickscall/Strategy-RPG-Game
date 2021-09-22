@@ -23,7 +23,6 @@ var LastColor : Color
 
 
 func _process(_delta):
-	print(LastColor)
 	# cursor movement
 	if Input.is_action_just_pressed("ui_down"): 
 		self.position.y += 64

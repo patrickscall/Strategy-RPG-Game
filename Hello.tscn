@@ -10,3 +10,7 @@ z_index = 10
 
 [node name="TestUnit" parent="." instance=ExtResource( 2 )]
 position = Vector2( 64, 64 )
+
+[node name="TestUnit2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 192, 64 )
+MovementRange = 3

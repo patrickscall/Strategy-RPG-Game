@@ -40,5 +40,6 @@ curve = SubResource( 2 )
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
 
 [node name="icon" type="Sprite" parent="Path2D/PathFollow2D"]
+visible = false
 texture = ExtResource( 1 )
 centered = false

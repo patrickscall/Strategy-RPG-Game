@@ -19,7 +19,7 @@ func set_selected(var is_selected :bool = false):
 func _set_target_pos(var newtargetpos : Vector2 = Vector2.ZERO):
 	MoveTarget.set_global_position(newtargetpos)
 
-func make_pathing(var newpoint : Vector2):
+func add_pathing(var newpoint : Vector2):
 	$Path2D.Curve2D.add_point(newpoint)
 
 func clear_pathing():

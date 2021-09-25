@@ -76,15 +76,19 @@ func _ready():
 	$AnimationPlayer.play("Idle")
 
 
+
+
+
 func limit_movement(var moverange):
 	CurrentPos = self.get_global_position()
-	if (StartPos - CurrentPos).length() > 64 * moverange:
+	if abs((StartPos.x - CurrentPos.x)/64 + (StartPos.y - CurrentPos.y)/64) > moverange:
 		CanPlace = false
 		change_sprite_color(Color(0.5, 0.5, 0.5))
 	else:
 		if !hovered:
 			CanPlace = true
 		change_sprite_color(Color(0.25, 0.7, 1))
+	print((StartPos.x - CurrentPos.x)/64 + (StartPos.y - CurrentPos.y)/64)
 
 func change_sprite_color(var color : Color):
 	LastColor = CursorSprite.get_modulate()

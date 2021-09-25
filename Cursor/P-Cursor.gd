@@ -61,8 +61,8 @@ func _process(_delta):
 			selected.set_selected(true)
 			StartPos = self.get_global_position()
 		elif selected and CanPlace: #placing unit on same space
-				selected._set_target_pos(self.get_global_position())
-				selected.move()
+#				selected._set_target_pos(self.get_global_position())
+				selected.move(self.get_global_position())
 				selected.set_selected(false)
 				selected = null
 				change_sprite_color(Color(1, 1, 1))

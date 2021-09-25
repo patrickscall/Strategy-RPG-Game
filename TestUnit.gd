@@ -3,10 +3,15 @@ extends KinematicBody2D
 export(NodePath) var MoveTargetPath
 onready var MoveTarget = get_node(MoveTargetPath)
 
+
+
 export(int,10) var MovementRange = 5
 
 var Selected : bool
 
+var Velocity : Vector2
+var CurrentPos : Vector2
+var TargetPos : Vector2
 
 
 func _ready():
@@ -26,8 +31,15 @@ func clear_pathing():
 	$Path2D.Curve2D.clear_points()
 
 
-func move():
-	self.set_global_position(MoveTarget.get_global_position())
-	MoveTarget.set_position(Vector2.ZERO)
+func move(var tar : Vector2):
+#	self.set_global_position(MoveTarget.get_global_position())
+#	MoveTarget.set_position(Vector2.ZERO)
+	CurrentPos = self.get_global_position()
+	TargetPos = tar
 	
+
+func _physics_process(delta):
+	if CurrentPos != TargetPos:
+		CurrentPos = self.get_global_position()
+		self.move_and_slide((TargetPos - CurrentPos) * 1000 * delta)
 

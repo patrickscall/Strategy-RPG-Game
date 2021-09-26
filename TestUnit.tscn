@@ -4,7 +4,7 @@
 [ext_resource path="res://TestUnit.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32, 32 )
+extents = Vector2( 28, 28 )
 
 [sub_resource type="Curve2D" id=2]
 _data = {
@@ -40,5 +40,6 @@ curve = SubResource( 2 )
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
 
 [node name="icon" type="Sprite" parent="Path2D/PathFollow2D"]
+visible = false
 texture = ExtResource( 1 )
 centered = false

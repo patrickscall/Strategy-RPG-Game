@@ -61,14 +61,14 @@ func _process(_delta):
 			selected.set_selected(true)
 			StartPos = self.get_global_position()
 		elif selected and CanPlace: #placing unit on same space
-				selected._set_target_pos(self.get_global_position())
-				selected.move()
+#				selected._set_target_pos(self.get_global_position())
+				selected.move(self.get_global_position())
 				selected.set_selected(false)
 				selected = null
 				change_sprite_color(Color(1, 1, 1))
 	if selected:
 		limit_movement(selected.MovementRange)
-		
+
 
 
 
@@ -76,15 +76,19 @@ func _ready():
 	$AnimationPlayer.play("Idle")
 
 
+
+
+
 func limit_movement(var moverange):
 	CurrentPos = self.get_global_position()
-	if (StartPos - CurrentPos).length() > 64 * moverange:
+	if abs((StartPos.x - CurrentPos.x)/64 + (StartPos.y - CurrentPos.y)/64) > moverange:
 		CanPlace = false
 		change_sprite_color(Color(0.5, 0.5, 0.5))
 	else:
 		if !hovered:
 			CanPlace = true
 		change_sprite_color(Color(0.25, 0.7, 1))
+	print((StartPos.x - CurrentPos.x)/64 + (StartPos.y - CurrentPos.y)/64)
 
 func change_sprite_color(var color : Color):
 	LastColor = CursorSprite.get_modulate()
@@ -92,18 +96,10 @@ func change_sprite_color(var color : Color):
 
 
 
+
 func _on_PCursor_body_entered(body):
 	if selected:
 		CanPlace = false
-#		match CurrentMoveDir:
-#			MoveDir.Up:
-#				self.position.y -= 64
-#			MoveDir.Down:
-#				self.position.y += 64
-#			MoveDir.Right:
-#				self.position.x += 64
-#			MoveDir.Left:
-#				self.position.x -= 64
 	hovered = body
 
 

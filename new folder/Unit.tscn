@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://new folder/Unit.gd" type="Script" id=2]
+[ext_resource path="res://new folder/Grid.tres" type="Resource" id=3]
+
+[node name="Unit" type="Path2D"]
+curve = null
+script = ExtResource( 2 )
+grid = ExtResource( 3 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+rotate = false
+loop = false
+
+[node name="Sprite" type="Sprite" parent="PathFollow2D"]
+texture = ExtResource( 1 )

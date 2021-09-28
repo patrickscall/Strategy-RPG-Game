@@ -9,25 +9,55 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "Cursor",
+"language": "GDScript",
+"path": "res://Cursor/Cursor.gd"
+}, {
+"base": "Node2D",
+"class": "GameBoard",
+"language": "GDScript",
+"path": "res://Levels/GameBoard.gd"
+}, {
 "base": "Resource",
 "class": "Grid",
 "language": "GDScript",
-"path": "res://new folder/Grid.gd"
+"path": "res://Grid/Grid.gd"
+}, {
+"base": "Reference",
+"class": "PathFinder",
+"language": "GDScript",
+"path": "res://Pathing/PathFinder.gd"
 }, {
 "base": "Path2D",
 "class": "Unit",
 "language": "GDScript",
-"path": "res://new folder/Unit.gd"
+"path": "res://Units/Unit.gd"
+}, {
+"base": "Reference",
+"class": "UnitOverlay",
+"language": "GDScript",
+"path": "res://Units/UnitOverlay.gd"
+}, {
+"base": "Reference",
+"class": "UnitPath",
+"language": "GDScript",
+"path": "res://Units/UnitPath.gd"
 } ]
 _global_script_class_icons={
+"Cursor": "",
+"GameBoard": "",
 "Grid": "",
-"Unit": ""
+"PathFinder": "",
+"Unit": "",
+"UnitOverlay": "",
+"UnitPath": ""
 }
 
 [application]
 
 config/name="P-Game"
-run/main_scene="res://Hello.tscn"
+run/main_scene="res://Levels/TestLvl.tscn"
 config/icon="res://icon.png"
 
 [display]
@@ -63,6 +93,11 @@ ui_down={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777234,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":13,"pressure":0.0,"pressed":false,"script":null)
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
+ ]
+}
+click={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
 

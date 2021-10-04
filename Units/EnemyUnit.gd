@@ -1,5 +1,5 @@
 tool
-class_name Unit
+class_name EnemyUnit
 extends Path2D
 
 signal walk_finished
@@ -23,9 +23,6 @@ onready var AnimPlayer = get_node(AnimPlayerPath)
 export(NodePath) var FollowerPath
 onready var Follower = get_node(FollowerPath)
 
-
-var CanAttack : bool = false
-var EnemiesInRange : Array = []
 
 
 func _ready() -> void:
@@ -63,9 +60,10 @@ func set_is_walking(value: bool) -> void:
 	IsWalking = value
 	set_process(IsWalking)
 
-func attack(target : Array):
-	for target in target.size():
-		target.receive_damage(Attack)
+
+func receive_damage(hitpower:int):
+	Health -= hitpower
+	print(Health)
 
 
 func _process(delta) -> void:
@@ -77,16 +75,3 @@ func _process(delta) -> void:
 		position = grid.calculate_map_position(CurrentCell)
 		curve.clear_points()
 		emit_signal("walk_finished")
-
-
-func _on_AttackRange_body_entered(body):
-	CanAttack = true
-	EnemiesInRange.append(body.get_parent())
-	attack(EnemiesInRange)
-
-
-func _on_AttackRange_body_exited(body):
-	CanAttack = false
-	EnemiesInRange.erase(body)
-
-

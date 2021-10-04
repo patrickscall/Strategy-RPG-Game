@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Cursor/Cursor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Units/Unit.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Units/UnitPath.gd" type="Script" id=7]
 [ext_resource path="res://Units/UnitOverlayTileMap.tres" type="TileSet" id=8]
 [ext_resource path="res://Pathing/MoveArrowTileset.tres" type="TileSet" id=9]
+[ext_resource path="res://Units/EnemyUnit.tscn" type="PackedScene" id=10]
 
 [node name="TestLvl" type="Node2D"]
 
@@ -42,9 +43,17 @@ z_index = 1
 
 [node name="Unit" parent="GameBoard" instance=ExtResource( 2 )]
 position = Vector2( 33, 31 )
+MoveRange = 5
 
 [node name="Unit2" parent="GameBoard" instance=ExtResource( 2 )]
 position = Vector2( 418, 32 )
+MoveRange = 5
+
+[node name="EnemyUnit" parent="GameBoard" instance=ExtResource( 10 )]
+position = Vector2( 160, 224 )
+
+[node name="EnemyUnit2" parent="GameBoard" instance=ExtResource( 10 )]
+position = Vector2( 96, 288 )
 
 [connection signal="accept_pressed" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_accept_pressed"]
 [connection signal="moved" from="GameBoard/Cursor" to="GameBoard" method="_on_Cursor_moved"]

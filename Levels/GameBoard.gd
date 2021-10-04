@@ -6,6 +6,7 @@ const DIRECTIONS = [Vector2.LEFT, Vector2.RIGHT, Vector2.UP, Vector2.DOWN]
 export(Resource) var grid
 
 var Units : Dictionary
+var EnemyUnits : Dictionary
 var ActiveUnit : Unit
 var WalkableCells : Array
 
@@ -32,7 +33,7 @@ func _get_configuration_warning() -> String:
 	return warning
 
 func is_occupied(cell: Vector2) -> bool:
-	return Units.has(cell)
+	return Units.has(cell) or EnemyUnits.has(cell)
 
 func get_walkable_cells(unit: Unit) -> Array:
 	return _flood_fill(unit.CurrentCell, unit.MoveRange)
@@ -40,11 +41,20 @@ func get_walkable_cells(unit: Unit) -> Array:
 func _reinitialize() -> void:
 	Units.clear()
 	
+	
 	for child in get_children():
 		var unit = child as Unit
 		if not unit:
 			continue
 		Units[unit.CurrentCell] = unit
+	
+	for child in get_children():
+		var unit = child as EnemyUnit
+		if not unit:
+			continue
+		EnemyUnits[unit.CurrentCell] = unit
+
+
 
 func _flood_fill(cell: Vector2, max_distance: int) -> Array:
 	var array : Array
@@ -75,6 +85,8 @@ func _flood_fill(cell: Vector2, max_distance: int) -> Array:
 
 func _move_active_unit(new_cell: Vector2) -> void:
 	if is_occupied(new_cell) or not new_cell in WalkableCells:
+		if EnemyUnits.has(new_cell) or not new_cell in WalkableCells:
+			pass
 		return
 	Units.erase(ActiveUnit.CurrentCell)
 	Units[new_cell] = ActiveUnit
@@ -112,9 +124,11 @@ func _on_Cursor_accept_pressed(cell: Vector2) -> void:
 	if not ActiveUnit:
 		_select_unit(cell)
 	elif ActiveUnit.IsSelected:
+		
 		_move_active_unit(cell)
 
 func _on_Cursor_moved(new_cell: Vector2) -> void:
 	if ActiveUnit and ActiveUnit.IsSelected:
 		Pathing.draw(ActiveUnit.CurrentCell, new_cell)
+
 

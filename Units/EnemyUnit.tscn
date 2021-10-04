@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Grid/Grid.tres" type="Resource" id=1]
+[ext_resource path="res://Units/EnemyUnit.gd" type="Script" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32, 32 )
+
+[node name="EnemyUnit" type="Path2D"]
+curve = null
+script = ExtResource( 2 )
+grid = ExtResource( 1 )
+Health = 0
+Attack = 0
+SpritePath = NodePath("PathFollow2D/Sprite")
+AnimPlayerPath = NodePath("PathFollow2D/Sprite/AnimationPlayer")
+FollowerPath = NodePath("PathFollow2D")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+rotate = false
+loop = false
+
+[node name="Sprite" type="Sprite" parent="PathFollow2D"]
+modulate = Color( 1, 0, 0, 1 )
+texture = ExtResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PathFollow2D/Sprite"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+visible = false
+shape = SubResource( 1 )

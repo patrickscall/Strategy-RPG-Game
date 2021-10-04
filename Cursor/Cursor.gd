@@ -65,3 +65,5 @@ func set_has_selected(value: bool) -> void:
 
 func get_has_selected() -> bool:
 	return HasSelected
+
+

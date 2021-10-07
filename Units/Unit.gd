@@ -10,7 +10,8 @@ var MoveSpeed = 600
 
 export(int) var Health = 10
 export(int) var Attack = 1
-
+export(int) var MaxAttackRange = 1
+export(int) var MinAttackRange = 1
 
 var CurrentCell : Vector2 setget set_cell
 var IsSelected : bool = false setget set_is_selected
@@ -63,10 +64,6 @@ func set_is_walking(value: bool) -> void:
 	IsWalking = value
 	set_process(IsWalking)
 
-func attack(target : Array):
-	for target in target.size():
-		target.receive_damage(Attack)
-
 
 func _process(delta) -> void:
 	Follower.offset += MoveSpeed * delta
@@ -79,14 +76,5 @@ func _process(delta) -> void:
 		emit_signal("walk_finished")
 
 
-func _on_AttackRange_body_entered(body):
-	CanAttack = true
-	EnemiesInRange.append(body.get_parent())
-	attack(EnemiesInRange)
-
-
-func _on_AttackRange_body_exited(body):
-	CanAttack = false
-	EnemiesInRange.erase(body)
 
 

@@ -12,6 +12,8 @@ onready var UiCooldownTimer :Timer = get_node(UICooldownTimerPath)
 export(NodePath) var AnimationPlayerPath
 onready var AnimPlayer = get_node(AnimationPlayerPath)
 
+var Menu = preload("res://Cursor/Menu.tscn")
+
 var CurrentCell : Vector2 setget set_cell
 var HasSelected : bool = false setget set_has_selected
 

@@ -1,4 +1,4 @@
-tool
+
 class_name Unit
 extends Path2D
 

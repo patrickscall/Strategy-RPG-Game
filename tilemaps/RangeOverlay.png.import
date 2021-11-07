@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/RangeOverlay.png-daaf080a5046bee93c062a07f2fd739f.stex"
+path="res://.import/RangeOverlay.png-e0e7307493bc2bcfb5a08aace96cc766.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Units/RangeOverlay.png"
-dest_files=[ "res://.import/RangeOverlay.png-daaf080a5046bee93c062a07f2fd739f.stex" ]
+source_file="res://tilemaps/RangeOverlay.png"
+dest_files=[ "res://.import/RangeOverlay.png-e0e7307493bc2bcfb5a08aace96cc766.stex" ]
 
 [params]
 

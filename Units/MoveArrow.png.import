@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/P-Cursor.png-4fbce6e800f2a8edc940262817259a56.stex"
+path="res://.import/MoveArrow.png-e66abe08eb366a67582c1a213be93ef2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Cursor/P-Cursor.png"
-dest_files=[ "res://.import/P-Cursor.png-4fbce6e800f2a8edc940262817259a56.stex" ]
+source_file="res://Units/MoveArrow.png"
+dest_files=[ "res://.import/MoveArrow.png-e66abe08eb366a67582c1a213be93ef2.stex" ]
 
 [params]
 

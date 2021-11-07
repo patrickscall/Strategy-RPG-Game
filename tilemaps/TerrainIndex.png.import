@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/PrototypeTilemap.png-1964d29974cdeca24222a5cd8e1ecfe8.stex"
+path="res://.import/TerrainIndex.png-7f8aaaf4c9ce01972f30cf0478178fcc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Levels/TileMaps/PrototypeTilemap.png"
-dest_files=[ "res://.import/PrototypeTilemap.png-1964d29974cdeca24222a5cd8e1ecfe8.stex" ]
+source_file="res://tilemaps/TerrainIndex.png"
+dest_files=[ "res://.import/TerrainIndex.png-7f8aaaf4c9ce01972f30cf0478178fcc.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/MoveArrow.png-5760eb69b91ed9fed80d714237043d55.stex"
+path="res://.import/MoveArrow.png-f465bb005ae41634d3ec692049c98d51.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Pathing/MoveArrow.png"
-dest_files=[ "res://.import/MoveArrow.png-5760eb69b91ed9fed80d714237043d55.stex" ]
+source_file="res://tilemaps/MoveArrow.png"
+dest_files=[ "res://.import/MoveArrow.png-f465bb005ae41634d3ec692049c98d51.stex" ]
 
 [params]
 

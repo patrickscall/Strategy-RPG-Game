@@ -1,12 +1,12 @@
 [gd_resource type="TileSet" load_steps=2 format=2]
 
-[ext_resource path="res://Units/UnitOverlay.png" type="Texture" id=1]
+[ext_resource path="res://Units/RangeOverlay.png" type="Texture" id=1]
 
 [resource]
-0/name = "UnitOverlay"
+0/name = "UnitOverlay.png 0"
 0/texture = ExtResource( 1 )
 0/tex_offset = Vector2( 0, 0 )
-0/modulate = Color( 0, 0.952941, 1, 0.588235 )
+0/modulate = Color( 1, 1, 1, 1 )
 0/region = Rect2( 0, 0, 64, 64 )
 0/tile_mode = 0
 0/occluder_offset = Vector2( 0, 0 )

@@ -12,8 +12,8 @@ var WalkableCells : Array
 
 export(NodePath) var OverlayPath
 onready var Overlay : UnitOverlay = get_node(OverlayPath)
-export(NodePath) var PathingPath
-onready var Pathing : UnitPath = get_node(PathingPath)
+#export(NodePath) var PathingPath
+#onready var Pathing : UnitPath = get_node(PathingPath)
 export(NodePath) var CursorPath
 onready var PlayerCursor = get_node(CursorPath)
 
@@ -57,6 +57,7 @@ func _reinitialize() -> void:
 
 
 func _flood_fill(cell: Vector2, max_distance: int) -> Array:
+	
 	var array : Array
 	var stack : Array = [cell]
 	while not stack.empty():
@@ -65,12 +66,12 @@ func _flood_fill(cell: Vector2, max_distance: int) -> Array:
 			continue
 		if current in array:
 			continue
-	
+
 		var difference: Vector2 = (current - cell).abs()
 		var distance : int = difference.x + difference.y
 		if distance > max_distance:
 			continue
-	
+
 		array.append(current)
 		for direction in DIRECTIONS:
 			var coordinates: Vector2 = current + direction
@@ -78,7 +79,7 @@ func _flood_fill(cell: Vector2, max_distance: int) -> Array:
 				continue
 			if coordinates in array:
 				continue
-			
+
 			stack.append(coordinates)
 	return array
 

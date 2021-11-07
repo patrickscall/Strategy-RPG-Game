@@ -1,71 +1,111 @@
-tool
-class_name Cursor
-extends Node2D
+extends Sprite
 
-signal accept_pressed(cell)
-signal moved(new_cell)
 
-export(Resource) var grid
-export(float, 0.1, 1, 0.1) var UiCooldown = 0.1
-export(NodePath) var UICooldownTimerPath
-onready var UiCooldownTimer :Timer = get_node(UICooldownTimerPath)
+
+
 export(NodePath) var AnimationPlayerPath
-onready var AnimPlayer = get_node(AnimationPlayerPath)
-
-var Menu = preload("res://Cursor/Menu.tscn")
-
-var CurrentCell : Vector2 setget set_cell
-var HasSelected : bool = false setget set_has_selected
+onready var animPlayer = get_node(AnimationPlayerPath)
+export(NodePath) var TerrainMap
+onready var map = get_node(TerrainMap)
 
 
-func _ready() -> void:
-	UiCooldownTimer.set_wait_time(UiCooldown)
-	self.set_position(grid.calculate_map_position(CurrentCell))
-	AnimPlayer.play("Idle")
+var currentCell
+var hoveredArea
+var hoveredBody
+var selection
+
+
+
+func _ready():
+	find_cell()
+	animPlayer.play("Idle")
+
+
+func _unhandled_input(event):
+	if event.is_action_pressed("ui_up",true):
+		if selection:
+			var x = map.get_cells_in_range(selection.currentCell,selection.moveRange)
+			if (x as Array).find(currentCell+Vector2.UP) != -1:
+				currentCell += Vector2.UP
+			elif (x as Array).find(currentCell+(Vector2.UP*2)) != -1:
+				currentCell += Vector2.UP*2
+			selection.draw_path(currentCell)
+		else:
+			currentCell += Vector2.UP
+	if event.is_action_pressed("ui_down",true):
+		if selection:
+			var x = map.get_cells_in_range(selection.currentCell,selection.moveRange)
+			if (x as Array).find(currentCell+Vector2.DOWN) != -1:
+				currentCell += Vector2.DOWN
+			elif (x as Array).find(currentCell+(Vector2.DOWN*2)) != -1:
+				currentCell += Vector2.DOWN*2
+			selection.draw_path(currentCell)
+		else:
+			currentCell += Vector2.DOWN
+			
+	if event.is_action_pressed("ui_right",true):
+		if selection:
+			var x = map.get_cells_in_range(selection.currentCell,selection.moveRange)
+			if (x as Array).find(currentCell+Vector2.RIGHT) != -1:
+				currentCell += Vector2.RIGHT
+			elif (x as Array).find(currentCell+(Vector2.RIGHT*2)) != -1:
+				currentCell += Vector2.RIGHT*2
+			selection.draw_path(currentCell)
+		else:
+			currentCell += Vector2.RIGHT
+	if event.is_action_pressed("ui_left",true):
+		if selection:
+			var x = map.get_cells_in_range(selection.currentCell,selection.moveRange)
+			if (x as Array).find(currentCell+Vector2.LEFT) != -1:
+				currentCell += Vector2.LEFT
+			elif (x as Array).find(currentCell+(Vector2.LEFT*2)) != -1:
+				currentCell += Vector2.LEFT*2
+			selection.draw_path(currentCell)
+		else:
+			currentCell += Vector2.LEFT
 	
+	if Input.is_action_just_pressed("ui_accept"):
+		# add selection shit here
+		if !selection:
+			selection = hoveredArea
+			if selection:
+				map.moveRange = selection.moveRange
+				map.target = selection.currentCell
+				selection.selected = true
+		else:
+			selection.selected = false
+			selection.walking = true
+			selection.follower.unit_offset = 1
+			selection = hoveredArea
 
 
-func _unhandled_input(event : InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		self.set_cell(grid.calculate_grid_coordinates(event.position))
-	elif event.is_action_pressed("click") or event.is_action_pressed("ui_accept"):
-		emit_signal("accept_pressed", CurrentCell)
-		get_tree().set_input_as_handled()
-	var should_move = event.is_pressed()
-	if event.is_echo():
-		should_move = should_move and UiCooldownTimer.is_stopped()
-	if not should_move:
-		return
+
+func _process(delta):
+	lock_to_cell()
+
+
+
+func find_cell():
+	currentCell = map.world_to_map(self.get_global_position())
+
+func lock_to_cell():
+	set_global_position(map.map_to_world(currentCell))
+
+
+func _on_Area2D_area_entered(area):
+	#display hovered info
+	if area.get_parent() is PathFollow2D:
+		var blah = area.get_parent()
+		hoveredArea = blah.get_parent()
+	else:
+		hoveredArea = area
+func _on_Area2D_area_exited(_area):
+	hoveredArea = null
+
+
+func _on_Area2D_body_entered(body):
+	var blah = body.get_parent()
+	hoveredBody = blah.get_parent()
 	
-	if event.is_action("ui_right"):
-		self.CurrentCell += Vector2.RIGHT
-	elif event.is_action("ui_up"):
-		self.CurrentCell += Vector2.UP
-	elif event.is_action("ui_left"):
-		self.CurrentCell += Vector2.LEFT
-	elif event.is_action("ui_down"):
-		self.CurrentCell += Vector2.DOWN
-
-#func _draw() -> void:
-#	draw_rect(Rect2(-grid.CellSize/2, grid.CellSize), Color.aliceblue, false, 2.0)
-
-func set_cell(value: Vector2) -> void:
-	if not grid.is_within_bounds(value):
-		CurrentCell = grid.clamp_to_grid(value)
-	else:
-		CurrentCell = value
-	position = grid.calculate_map_position(CurrentCell)
-	emit_signal("moved", CurrentCell)
-	UiCooldownTimer.start()
-
-func set_has_selected(value: bool) -> void:
-	if HasSelected:
-		self.set_modulate(Color(1,1,1))
-	else:
-		self.set_modulate(Color(0.1, 0.6, 1))
-	HasSelected = !HasSelected
-
-func get_has_selected() -> bool:
-	return HasSelected
-
-
+func _on_Area2D_body_exited(_body):
+	hoveredBody = null

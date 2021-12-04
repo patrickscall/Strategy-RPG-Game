@@ -1,49 +1,40 @@
-class_name Unit
+class_name EnemyUnit
 extends PathFollow2D
-
 
 export(int) var moveRange = 3
 var moveSpeed = 600
 
 export(int) var Health = 10
 export(int) var Attack = 1
-export(int) var MaxAttackRange = 1
-export(int) var MinAttackRange = 1
+export(Vector2) var attackRange = Vector2(1,1)
 
 var currentCell : Vector2
-var selected : bool = false setget set_selected
+var highlighted : bool = false setget set_highlighted
 
 export(NodePath) var SpritePath
 onready var UnitSprite = get_node(SpritePath)
 export(NodePath) var AnimPlayerPath
 onready var AnimPlayer = get_node(AnimPlayerPath)
-onready var pathNode = get_parent()
+export(NodePath) var PathNode
+onready var pathNode = get_node(PathNode)
 export(NodePath) var TerrainMapPath
 onready var map = get_node(TerrainMapPath)
-export(NodePath) var RangeOverlayPath
-onready var rangeOverlay = get_node(RangeOverlayPath)
-export(NodePath) var MoveArrow
-onready var moveArrow = get_node(MoveArrow)
-onready var area = $Area2D/CollisionShape2D
-export(NodePath) var TurnHandlerPath
-onready var turnHandler = get_node(TurnHandlerPath)
+export(NodePath) var EnemyRangeOverlayPath
+onready var enemyRangeOverlay = get_node(EnemyRangeOverlayPath)
 
-var hasMoved : bool = false setget set_hasMoved
-var CanAttack : bool = false
-var EnemiesInRange : Array
+
+
+var unitsInRange : Array
 var cellsInRange : Array
+var cellsInAttackRange : Array
 
 var path : Curve2D
 var pathArray : PoolVector2Array
 var walking : bool = false
 
-
-
 func _ready():
 	set_cell()
-	AutoLoad.add_to_list(self, AutoLoad.unitList)
-
-
+	
 
 func set_cell():
 	currentCell = map.world_to_map(self.get_global_position())
@@ -51,46 +42,38 @@ func set_cell():
 
 func fill_movement_range(origin:Vector2,moverange:int):
 	cellsInRange = map.get_cells_in_range(origin,moverange)
-	for i in cellsInRange.size():
-		rangeOverlay.set_cellv(cellsInRange[i],0)
+	cellsInAttackRange = map.get_cells_in_range(origin,moverange + attackRange.y)
+	for i in cellsInAttackRange.size():
+		enemyRangeOverlay.set_cellv(cellsInRange[i],0)
+
 
 func clear_movement_range():
-	rangeOverlay.clear()
+	enemyRangeOverlay.clear()
 
-func draw_path(target:Vector2):
-	moveArrow.clear()
+func set_highlighted(value):
+	if value:
+		fill_movement_range(currentCell,moveRange)
+	else:
+		clear_movement_range()
+
+
+func set_path(target:Vector2):
 	path = Curve2D.new()
 	if target != currentCell:
 		pathArray = map.create_path(target,currentCell)
 		for i in pathArray.size():
 			var x = map.map_to_world(pathArray[i])
 			path.add_point(x)
-			moveArrow.set_cellv(pathArray[i],0)
-			moveArrow.update_bitmask_area(pathArray[i])
-	moveArrow.set_modulate(Color(0, 0.5, 1))
 	pathNode.set_curve(path)
-
-func set_selected(value):
-	if value:
-		fill_movement_range(currentCell,moveRange)
-	else:
-		clear_movement_range()
-		moveArrow.clear()
 
 func move_along_path(delta):
 	if self.unit_offset > 0:
 		self.offset -= moveSpeed * delta
 	else:
 		walking = false
+		print(self.position)
 		path.clear_points()
 		pathNode.set_curve(path)
 		set_cell()
-		turnHandler.movedUnits.append(self)
 
-
-
-
-func _process(delta):
-	if walking:
-		move_along_path(delta)
 

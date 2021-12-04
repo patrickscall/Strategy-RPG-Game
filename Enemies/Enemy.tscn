@@ -1,27 +1,23 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Units/Unit.gd" type="Script" id=1]
+[ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 22, 22 )
 
-[node name="Unit" type="PathFollow2D"]
-rotate = false
-cubic_interp = false
-loop = false
+[node name="Enemy" type="PathFollow2D"]
 script = ExtResource( 1 )
-SpritePath = NodePath("Sprite")
-AnimPlayerPath = NodePath("Sprite/AnimationPlayer")
+AnimationPlayerPath = NodePath("Sprite/AnimationPlayer")
 
 [node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 1.5, 0, 0, 1 )
 texture = ExtResource( 2 )
 centered = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 
 [node name="Area2D" type="Area2D" parent="."]
-collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 32, 32 )

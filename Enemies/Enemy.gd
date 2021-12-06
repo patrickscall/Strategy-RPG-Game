@@ -15,14 +15,14 @@ onready var map = get_node(TerrainMap)
 onready var pathNode = get_parent()
 export(NodePath) var EnemyRangeOverlay
 onready var rangeOverlay = get_node(EnemyRangeOverlay)
-export(NodePath) var TurnHandlerPath
-onready var turnHandler = get_node(TurnHandlerPath)
+
 
 var currentCell : Vector2
 var path : Curve2D
 var pathArray : PoolVector2Array
 var cellsInRange : Array = []
 var cellsInAttackRange : Array = []
+var unitsInRange : Array = []
 var walking : bool
 
 
@@ -30,7 +30,8 @@ var highlighted : bool = false setget set_highlighted
 
 func _ready():
 	set_cell()
-	AutoLoad.add_to_list(self,AutoLoad.enemyList)
+	TurnHandler.add_to_list(self,TurnHandler.enemyList)
+	TurnHandler.connect("refresh_enemyList", self, "add_to_enemyList")
 
 func set_cell():
 	currentCell = map.world_to_map(self.get_global_position())
@@ -64,7 +65,24 @@ func move_along_path(delta):
 		path.clear_points()
 		pathNode.set_curve(path)
 		set_cell()
-		turnHandler.movedEnemies.append(self)
+		TurnHandler.movedEnemies.append(self)
 
+func check_if_in_range():
+	var q : Array
+	for i in TurnHandler.unitList.size():
+		q.append(TurnHandler.unitList[i].currentCell)
+		if cellsInAttackRange.has(q[i]):
+			unitsInRange.append(TurnHandler.unitList[i])
+
+func find_closest_target():
+	pass
+
+func add_to_enemyList():
+	TurnHandler.enemyList.append(self)
+
+
+func _process(delta):
+	if !TurnHandler.playerTurn:
+		pass
 
 

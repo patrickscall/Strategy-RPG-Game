@@ -11,8 +11,6 @@ rotate = false
 cubic_interp = false
 loop = false
 script = ExtResource( 1 )
-SpritePath = NodePath("Sprite")
-AnimPlayerPath = NodePath("Sprite/AnimationPlayer")
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )

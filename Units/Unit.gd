@@ -13,10 +13,9 @@ export(int) var MinAttackRange = 1
 var currentCell : Vector2
 var selected : bool = false setget set_selected
 
-export(NodePath) var SpritePath
-onready var UnitSprite = get_node(SpritePath)
-export(NodePath) var AnimPlayerPath
-onready var AnimPlayer = get_node(AnimPlayerPath)
+export(Texture) var texture
+onready var sprite = $Sprite
+onready var AnimPlayer = $Sprite/AnimationPlayer
 onready var pathNode = get_parent()
 export(NodePath) var TerrainMapPath
 onready var map = get_node(TerrainMapPath)
@@ -25,10 +24,9 @@ onready var rangeOverlay = get_node(RangeOverlayPath)
 export(NodePath) var MoveArrow
 onready var moveArrow = get_node(MoveArrow)
 onready var area = $Area2D/CollisionShape2D
-export(NodePath) var TurnHandlerPath
-onready var turnHandler = get_node(TurnHandlerPath)
 
-var hasMoved : bool = false setget set_hasMoved
+
+
 var CanAttack : bool = false
 var EnemiesInRange : Array
 var cellsInRange : Array
@@ -41,8 +39,8 @@ var walking : bool = false
 
 func _ready():
 	set_cell()
-	AutoLoad.add_to_list(self, AutoLoad.unitList)
-
+	TurnHandler.add_to_list(self, TurnHandler.unitList)
+	TurnHandler.connect("refresh_unitList", self, "add_to_unitList")
 
 
 func set_cell():
@@ -54,8 +52,10 @@ func fill_movement_range(origin:Vector2,moverange:int):
 	for i in cellsInRange.size():
 		rangeOverlay.set_cellv(cellsInRange[i],0)
 
+
 func clear_movement_range():
 	rangeOverlay.clear()
+
 
 func draw_path(target:Vector2):
 	moveArrow.clear()
@@ -70,12 +70,14 @@ func draw_path(target:Vector2):
 	moveArrow.set_modulate(Color(0, 0.5, 1))
 	pathNode.set_curve(path)
 
+
 func set_selected(value):
 	if value:
 		fill_movement_range(currentCell,moveRange)
 	else:
 		clear_movement_range()
 		moveArrow.clear()
+
 
 func move_along_path(delta):
 	if self.unit_offset > 0:
@@ -85,10 +87,21 @@ func move_along_path(delta):
 		path.clear_points()
 		pathNode.set_curve(path)
 		set_cell()
-		turnHandler.movedUnits.append(self)
+		grey_out()
+
+func grey_out():
+	sprite.set_modulate(Color(0.4,0.4,0.4))
+	area.set_disabled(true)
+	TurnHandler.movedUnits.append(self)
+	TurnHandler.check_if_turn_over()
 
 
+func start_of_turn():
+	sprite.set_modulate(Color(1,1,1))
+	area.set_disabled(false)
 
+func add_to_unitList():
+	TurnHandler.unitList.append(self)
 
 func _process(delta):
 	if walking:

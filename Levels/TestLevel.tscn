@@ -47,6 +47,7 @@ MoveArrow = NodePath("../../TerrainMap/MoveArrow")
 
 [node name="Unit2" parent="PlayerPaths" instance=ExtResource( 4 )]
 position = Vector2( 320, 192 )
+moveRange = 7
 TerrainMapPath = NodePath("../../TerrainMap")
 RangeOverlayPath = NodePath("../../TerrainMap/RangeOverlay")
 MoveArrow = NodePath("../../TerrainMap/MoveArrow")
@@ -61,7 +62,6 @@ curve = SubResource( 2 )
 
 [node name="Enemy" parent="EnemyPaths" instance=ExtResource( 6 )]
 position = Vector2( 448, 192 )
-moveRange = null
-attackRange = null
 TerrainMap = NodePath("../../TerrainMap")
 EnemyRangeOverlay = NodePath("../../TerrainMap/EnemyRangeOverlay")
+MoveArrowPath = NodePath("../../TerrainMap/MoveArrow")

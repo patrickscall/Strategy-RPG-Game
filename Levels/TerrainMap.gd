@@ -76,7 +76,12 @@ func initialize_cells(origin:Vector2):
 	cellIndex[(cellPositions as Array).find(origin)] = 0
 	cellCost[(cellPositions as Array).find(origin)] = 0
 	costToOrigin[(cellPositions as Array).find(origin)] = 0
-
+	for i in TurnHandler.unitList.size():
+		var unitCellID = (cellPositions as Array).find(TurnHandler.unitList[i].currentCell)
+		cellCost[unitCellID] = INF
+	for i in TurnHandler.enemyList.size():
+		var enemyCellID = (cellPositions as Array).find(TurnHandler.enemyList[i].currentCell)
+		cellCost[enemyCellID] = INF
 
 func check_if_cell_exists(cell:Vector2) -> bool:
 	var value : bool

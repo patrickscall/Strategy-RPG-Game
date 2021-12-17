@@ -15,6 +15,8 @@ onready var map = get_node(TerrainMap)
 onready var pathNode = get_parent()
 export(NodePath) var EnemyRangeOverlay
 onready var rangeOverlay = get_node(EnemyRangeOverlay)
+export(NodePath) var MoveArrowPath
+onready var moveArrow = get_node(MoveArrowPath)
 
 
 var currentCell : Vector2
@@ -36,18 +38,17 @@ func _ready():
 func set_cell():
 	currentCell = map.world_to_map(self.get_global_position())
 
-func set_highlighted(value):
+func set_highlighted(value : bool):
 	highlighted = value
 	fill_movement_range(currentCell,moveRange)
 	rangeOverlay.set_visible(value)
-
 func fill_movement_range(origin:Vector2,moverange:int):
 	cellsInRange = map.get_cells_in_range(origin,moverange)
 	cellsInAttackRange = map.get_cells_in_range(origin,moverange+attackRange.y)
 	for i in cellsInAttackRange.size():
 		rangeOverlay.set_cellv(cellsInAttackRange[i],0)
 
-func draw_path(target:Vector2):
+func set_path_to(target:Vector2):
 	path = Curve2D.new()
 	if target != currentCell:
 		pathArray = map.create_path(target,currentCell)
@@ -65,24 +66,45 @@ func move_along_path(delta):
 		path.clear_points()
 		pathNode.set_curve(path)
 		set_cell()
-		TurnHandler.movedEnemies.append(self)
 
-func check_if_in_range():
+
+func check_if_in_range() -> bool:
 	var q : Array
 	for i in TurnHandler.unitList.size():
 		q.append(TurnHandler.unitList[i].currentCell)
 		if cellsInAttackRange.has(q[i]):
 			unitsInRange.append(TurnHandler.unitList[i])
+	if q.size() > 0:
+		return true
+	else:
+		return false
 
 func find_closest_target():
-	pass
+	if check_if_in_range():
+		var p = moveRange + attackRange.y
+		for i in unitsInRange.size():
+			var q = unitsInRange[i].currentCell
+			var e = map.costToOrigin[(map.cellPositions as Array).find(q)]
+			print(e)
+			if e <= p:
+				p = e
+				set_path_to(q)
+				walking = true
+				self.unit_offset = 1
 
 func add_to_enemyList():
 	TurnHandler.enemyList.append(self)
 
+func take_turn():
+	map.moveRange = moveRange
+	map.target = currentCell
+	fill_movement_range(currentCell, moveRange)
+	set_highlighted(false)
+	find_closest_target()
 
 func _process(delta):
-	if !TurnHandler.playerTurn:
-		pass
+	if walking:
+		move_along_path(delta)
+
 
 

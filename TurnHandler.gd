@@ -31,16 +31,22 @@ func check_if_turn_over():
 		unitList.clear()
 		movedUnits.clear()
 		emit_signal("refresh_unitList")
-#		print("playerTurn ", playerTurn)
+		print("playerTurn ", playerTurn)
+		take_enemy_turns()
 
 func check_if_enemy_turn_over():
-	if movedEnemies.size() >= unitList.size():
+	if movedEnemies.size() >= enemyList.size():
 		playerTurn = true
 		enemyList.clear()
 		movedEnemies.clear()
 		emit_signal("refresh_enemyList")
-#		print("playerTurn ", playerTurn)
+		print("playerTurn ", playerTurn)
 
+func take_enemy_turns():
+	for i in enemyList.size():
+		enemyList[i].take_turn()
+		movedEnemies.append(enemyList[i])
+		print("Moved Enemies ",movedEnemies)
 
 
 

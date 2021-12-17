@@ -7,6 +7,8 @@
 extents = Vector2( 22, 22 )
 
 [node name="Enemy" type="PathFollow2D"]
+rotate = false
+loop = false
 script = ExtResource( 1 )
 AnimationPlayerPath = NodePath("Sprite/AnimationPlayer")
 

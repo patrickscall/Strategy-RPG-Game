@@ -47,6 +47,7 @@ func set_cell():
 	currentCell = map.world_to_map(self.get_global_position())
 
 
+
 func fill_movement_range(origin:Vector2,moverange:int):
 	cellsInRange = map.get_cells_in_range(origin,moverange)
 	for i in cellsInRange.size():
@@ -84,6 +85,7 @@ func move_along_path(delta):
 		self.offset -= moveSpeed * delta
 	else:
 		walking = false
+		path = Curve2D.new()
 		path.clear_points()
 		pathNode.set_curve(path)
 		set_cell()

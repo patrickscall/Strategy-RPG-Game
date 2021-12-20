@@ -15,7 +15,7 @@ signal refresh_enemyList
 
 func add_to_list(item,list):
 	list.append(item)
-	print(list)
+
 
 
 

@@ -33,21 +33,27 @@ tile_set = ExtResource( 5 )
 format = 1
 
 [node name="EnemyRangeOverlay" type="TileMap" parent="TerrainMap"]
-modulate = Color( 1, 0, 0, 0.392157 )
+self_modulate = Color( 1, 0, 0, 0.392157 )
 tile_set = ExtResource( 3 )
 format = 1
+
+[node name="TileMap" type="TileMap" parent="TerrainMap/EnemyRangeOverlay"]
+modulate = Color( 1, 0.937255, 0, 0.392157 )
+tile_set = ExtResource( 3 )
+format = 1
+tile_data = PoolIntArray( 131068, 0, 0 )
 
 [node name="PlayerPaths" type="Path2D" parent="."]
 curve = SubResource( 1 )
 
 [node name="Unit" parent="PlayerPaths" instance=ExtResource( 4 )]
+moveRange = 7
 TerrainMapPath = NodePath("../../TerrainMap")
 RangeOverlayPath = NodePath("../../TerrainMap/RangeOverlay")
 MoveArrow = NodePath("../../TerrainMap/MoveArrow")
 
 [node name="Unit2" parent="PlayerPaths" instance=ExtResource( 4 )]
 position = Vector2( 320, 192 )
-moveRange = 7
 TerrainMapPath = NodePath("../../TerrainMap")
 RangeOverlayPath = NodePath("../../TerrainMap/RangeOverlay")
 MoveArrow = NodePath("../../TerrainMap/MoveArrow")

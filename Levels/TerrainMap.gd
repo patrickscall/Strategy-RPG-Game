@@ -144,7 +144,7 @@ func get_cells_in_range(origin:Vector2, moverange:int) -> PoolVector2Array:
 func find_cheapest_adjacent_cell(current:Vector2) -> Vector2:
 	if check_if_cell_exists(current):
 		var upID = -1
-		var rightID	= -1
+		var rightID = -1
 		var leftID = -1
 		var downID = -1
 		var cheapestCellID = -1
@@ -179,7 +179,7 @@ func create_path(tar:Vector2,home:Vector2) -> PoolVector2Array:
 	path = []
 	var tarID = (cellPositions as Array).find(tar)
 	if costToOrigin[tarID] == INF:
-		print("Out of Bounds fix this shit patrick")
+		print("Out of Bounds")
 	path.append(tar)
 	while current != home:
 		path.append(find_cheapest_adjacent_cell(current))
@@ -197,5 +197,24 @@ func show_index():
 		else:
 			visibleIndex.set_cellv(cellPositions[i], numbersIndex[costToOrigin[i]])
 
-
-
+func get_cells_in_attack_range(cellsInMoveRange:PoolVector2Array,attackRangeMin:int,attackRangeMax:int) -> PoolVector2Array:
+	var x : PoolVector2Array = []
+	var cellIDs : Array = []
+	for i in cellsInMoveRange.size(): # for every cell in move range
+		for p in (1 + attackRangeMax-attackRangeMin): # for attack range
+			var q = p+attackRangeMin
+			var t = (cellPositions as Array).find(cellsInMoveRange[i]+(UP*q)) # find id of cell checking
+			if !cellIDs.has(t) and t != -1: # don't do if cell ID has already been found or if cell ID doesn't exist
+				cellIDs.append(t)
+			t = (cellPositions as Array).find(cellsInMoveRange[i]+(RIGHT*q))
+			if !cellIDs.has(t) and t != -1:
+				cellIDs.append(t)
+			t = (cellPositions as Array).find(cellsInMoveRange[i]+(DOWN*q))
+			if !cellIDs.has(t) and t != -1:
+				cellIDs.append(t)
+			t = (cellPositions as Array).find(cellsInMoveRange[i]+(LEFT*q))
+			if !cellIDs.has(t) and t != -1:
+				cellIDs.append(t)
+	for i in cellIDs.size():
+		x.append(cellPositions[cellIDs[i]])
+	return x

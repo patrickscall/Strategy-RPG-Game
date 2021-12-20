@@ -42,11 +42,19 @@ func set_highlighted(value : bool):
 	highlighted = value
 	fill_movement_range(currentCell,moveRange)
 	rangeOverlay.set_visible(value)
+	
 func fill_movement_range(origin:Vector2,moverange:int):
+	var q : PoolVector2Array
 	cellsInRange = map.get_cells_in_range(origin,moverange)
-	cellsInAttackRange = map.get_cells_in_range(origin,moverange+attackRange.y)
+	cellsInAttackRange = map.get_cells_in_attack_range(cellsInRange,attackRange.x,attackRange.y)
+	for i in cellsInRange.size():
+		rangeOverlay.set_cellv(cellsInRange[i],0)
 	for i in cellsInAttackRange.size():
-		rangeOverlay.set_cellv(cellsInAttackRange[i],0)
+		if !cellsInRange.has(cellsInAttackRange[i]):
+			q.append(cellsInAttackRange[i])
+	for i in q.size():
+		rangeOverlay.get_child(0).set_cellv(q[i],0)
+
 
 func set_path_to(target:Vector2):
 	path = Curve2D.new()
@@ -67,30 +75,32 @@ func move_along_path(delta):
 		pathNode.set_curve(path)
 		set_cell()
 
-
-func check_if_in_range() -> bool:
-	var q : Array
+func get_units_in_range():
+	var q :  Array
+	unitsInRange.clear()
 	for i in TurnHandler.unitList.size():
-		q.append(TurnHandler.unitList[i].currentCell)
-		if cellsInAttackRange.has(q[i]):
+		if cellsInAttackRange.has(TurnHandler.unitList[i].currentCell):
 			unitsInRange.append(TurnHandler.unitList[i])
-	if q.size() > 0:
+	print(unitsInRange)
+	if unitsInRange.size() > 0:
 		return true
 	else:
 		return false
 
-func find_closest_target():
-	if check_if_in_range():
+
+func get_closest_target():
+	if get_units_in_range():
 		var p = moveRange + attackRange.y
 		for i in unitsInRange.size():
 			var q = unitsInRange[i].currentCell
 			var e = map.costToOrigin[(map.cellPositions as Array).find(q)]
-			print(e)
 			if e <= p:
 				p = e
 				set_path_to(q)
 				walking = true
 				self.unit_offset = 1
+
+
 
 func add_to_enemyList():
 	TurnHandler.enemyList.append(self)
@@ -100,7 +110,7 @@ func take_turn():
 	map.target = currentCell
 	fill_movement_range(currentCell, moveRange)
 	set_highlighted(false)
-	find_closest_target()
+	get_closest_target()
 
 func _process(delta):
 	if walking:
